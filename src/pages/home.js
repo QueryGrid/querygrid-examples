@@ -18,9 +18,21 @@ const Home = () => {
 
         console.log("CREATED TODO", todo)
     }
+
+    const selectTodo = async (event) => {
+        event.preventDefault();
+        const todo = await request.select('todos', {
+            where: {
+                completed: 'false'
+            },
+            columns: ['completed']
+        })
+
+        console.log("CREATED TODO", todo)
+    }
     return (
         <div>
-            <form onSubmit={createTodo}>
+            <form onSubmit={selectTodo}>
                 <input type="text" placeholder="title" name="title" />
                 <select name="completed">
                     <option value="true">True</option>
