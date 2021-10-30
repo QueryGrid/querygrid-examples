@@ -25,14 +25,47 @@ const Home = () => {
             where: {
                 completed: 'false'
             },
-            columns: ['completed']
+            select: ['completed']
         })
 
         console.log("CREATED TODO", todo)
     }
+
+    const updateTodo = async (event) => {
+        event.preventDefault();
+        const todo = await request.update('todos', {
+            where: {
+                completed: 'false'
+            },
+            columns: [
+                {
+                    name: 'description',
+                    value: 'lorem ipsum'
+                },
+                {
+                    name: "mask",
+                    value: "future"
+                },
+                {
+                    name: "friend",
+                    value: "preacher"
+                },
+                {
+                    name: 'username',
+                    value: 'lorem'
+                },
+                {
+                    name: 'completed',
+                    value: 'true'
+                }
+            ]
+        })
+
+        console.log("UPDATED TODO", todo)
+    }
     return (
         <div>
-            <form onSubmit={selectTodo}>
+            <form onSubmit={updateTodo}>
                 <input type="text" placeholder="title" name="title" />
                 <select name="completed">
                     <option value="true">True</option>
