@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Card, Container, FormGroup, Input} from "reactstrap";
 import request from "../services/request";
 import FormModal from "../components/modal/modal";
@@ -9,62 +9,49 @@ const defaultValues = {
     completed: 'false'
 }
 
-const data = [
-    {
-        id: '1',
-        title: 'watch seven deadly sins',
-        completed: 'true'
-    },
-    {
-        id: '2',
-        title: 'watch one punch man',
-        completed: 'false'
-    },
-    {
-        id: '3',
-        title: 'watch javascript course',
-        completed: 'false'
-    }
-]
-
 const Home = () => {
     const [open, setOpen] = useState(false);
     const [formValues, setFormValues] = useState(defaultValues);
+    const [todos, setTodos] = useState([]);
+    const [modalType, setModalType] = useState('new');
 
     const changeHandler = (event) => {
         const { name, value } = event.target;
         setFormValues({ ...formValues, [name]: value })
     }
 
-    const createTodo = async (event) => {
-        event.preventDefault();
-        const todo = await request.service.create('fiona', [
+    const createTodo = async () => {
+        const todo = await request.service.create('todos', [
             {
-                name: 'name',
-                type: 'string',
-                value: 'fiona'
+                name: 'title',
+                value: formValues.title
             },
             {
-                name: 'gender',
-                type: 'string',
-                value: 'strict female'
+                name: 'completed',
+                value: formValues.completed
             }
-        ])
+        ]);
+
+        if (todo.statusCode === 201) {
+            setTodos([...todos, todo.data]);
+            setOpen(false)
+        }
 
         console.log("CREATED TODO", todo)
     }
 
-    const selectTodo = async (event) => {
-        event.preventDefault();
-        const todo = await request.select('todos', {
-            where: {
-                completed: 'false'
-            },
-            select: ['completed']
+    useEffect(() => {
+        request.service.select('todos', {
+            select: ['id', 'title', 'completed'],
+        }).then((response) => {
+            if (response.statusCode === 200) {
+                setTodos(response.data)
+            }
+
+            console.log(response)
         })
+    }, [])
 
-        console.log("CREATED TODO", todo)
-    }
 
     const updateTodo = async (event) => {
         event.preventDefault();
@@ -83,9 +70,18 @@ const Home = () => {
         console.log("UPDATED TODO", todo)
     }
 
-    const openModal = (values) => {
+    const openModal = (values, type) => {
         setFormValues(values)
         setOpen(true)
+        setModalType(type)
+    }
+
+    const saveHandler = (event) => {
+        event.preventDefault()
+
+        if (modalType === 'new') {
+            createTodo()
+        }
     }
 
     const closeModal = () => {
@@ -98,12 +94,13 @@ const Home = () => {
 
     return (
         <>
-            <FormModal open={open} toggleModal={closeModal} changeHandler={changeHandler} formValues={formValues} />
+            <FormModal open={open} toggleModal={closeModal} changeHandler={changeHandler} saveHandler={saveHandler} formValues={formValues} />
             <Container style={{maxWidth: '900px', marginTop: '30px', textAlign: 'right'}}>
-                <Button style={{color: '#fff', marginBottom: '20px'}} onClick={() => openModal(defaultValues)}>
+                <Button style={{color: '#fff', marginBottom: '20px'}} onClick={() => openModal(defaultValues, 'new')}>
                     Create Todo
                 </Button>
-                {data.map((todo) => (
+                {todos.length < 1 && <p style={{ textAlign: 'center' }}>No Todo</p>}
+                {todos.map((todo) => (
                     <Todo key={todo.id} data={todo} openModal={openModal} deleteHandler={deleteHandler} />
                 ))}
             </Container>

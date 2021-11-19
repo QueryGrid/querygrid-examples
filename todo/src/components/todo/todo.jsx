@@ -13,7 +13,7 @@ const Todo = ({ data, openModal, deleteHandler }) => {
             </FormGroup>
             <p style={{ marginBottom: '0px', marginLeft: '20px'}}>{data?.title}</p>
             <div style={{ marginLeft: 'auto'}}>
-                <Button color="warning" size="sm" style={{color: '#fff', marginRight: '10px'}} onClick={() => openModal(data)}>
+                <Button color="warning" size="sm" style={{color: '#fff', marginRight: '10px'}} onClick={() => openModal(data, 'edit')}>
                     Edit
                 </Button>
                 <Button color="danger" size="sm" style={{color: '#fff'}} onClick={() => deleteHandler(data)}>

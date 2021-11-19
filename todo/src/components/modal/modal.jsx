@@ -1,6 +1,6 @@
 import {Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 
-const FormModal = ({open, toggleModal, changeHandler, formValues}) => {
+const FormModal = ({open, toggleModal, changeHandler, saveHandler, formValues}) => {
     return (
         <Modal
             isOpen={open}
@@ -37,7 +37,7 @@ const FormModal = ({open, toggleModal, changeHandler, formValues}) => {
                 </Form>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={function noRefCheck(){}}>
+                <Button color="primary" onClick={saveHandler}>
                     Save
                 </Button>
                 <Button onClick={toggleModal}>
