@@ -101,8 +101,20 @@ const Home = () => {
         setOpen(false)
     }
 
-    const deleteHandler = (values) => {
-        console.log("DELETE", values)
+    const deleteHandler = async (values) => {
+        const todo = await request.service.remove('todos', {
+            where: {
+                id: values.id
+            },
+        });
+        if (todo.statusCode === 200) {
+            const copyTodos = [...todos]
+            const currentIndex = copyTodos.findIndex((copyTodo) => copyTodo.id === values.id)
+            if (~currentIndex) copyTodos.splice(currentIndex, 1);
+            setTodos(copyTodos)
+        }
+
+        console.log(todo)
     }
 
     return (
