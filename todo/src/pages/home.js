@@ -52,20 +52,31 @@ const Home = () => {
         })
     }, [])
 
-
-    const updateTodo = async (event) => {
-        event.preventDefault();
-        const todo = await request.service.update('fiona', {
+    const updateTodo = async (data) => {
+        const todo = await request.service.update('todos', {
             where: {
-                id: 'quPJswzP0omLRB'
+                id: data.id
             },
             columns: [
                 {
-                    name: 'state',
-                    value: 'anambra'
+                    name: 'title',
+                    value: formValues.title
+                },
+                {
+                    name: 'completed',
+                    value: formValues.completed
                 }
             ]
         })
+
+
+        if (todo.statusCode === 200) {
+            const copyTodos = [...todos]
+            const currentIndex = copyTodos.findIndex((copyTodo) => copyTodo.id === todo.data?.id)
+            if (~currentIndex) copyTodos.splice(currentIndex, 1, todo.data);
+            setTodos(copyTodos)
+            setOpen(false)
+        }
 
         console.log("UPDATED TODO", todo)
     }
@@ -76,11 +87,13 @@ const Home = () => {
         setModalType(type)
     }
 
-    const saveHandler = (event) => {
+    const saveHandler = (event, data) => {
         event.preventDefault()
 
         if (modalType === 'new') {
             createTodo()
+        } else {
+            updateTodo(data)
         }
     }
 

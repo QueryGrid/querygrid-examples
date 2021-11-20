@@ -37,7 +37,7 @@ const FormModal = ({open, toggleModal, changeHandler, saveHandler, formValues}) 
                 </Form>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={saveHandler}>
+                <Button color="primary" onClick={(e) => saveHandler(e, formValues)}>
                     Save
                 </Button>
                 <Button onClick={toggleModal}>
