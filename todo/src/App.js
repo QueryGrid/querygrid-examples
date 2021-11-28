@@ -14,13 +14,14 @@ const ProtectedRoute = ({children}) => {
 
     useEffect(() => {
         request.auth.currentSignedInUser().then((response) => {
+            console.log(response)
             setUser(response)
             setLoading(false)
         }).catch((err) => {
             setUser(err) // null
             setLoading(false)
         })
-    }, [user])
+    }, [])
 
     if (loading) return null
     return user ? children : <Navigate to="/login" />;
