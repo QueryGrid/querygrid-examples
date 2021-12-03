@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import Home from "./pages/home";
 import Realtime from "./pages/realtime";
+import Upload from "./pages/upload";
 import Register from "./pages/register";
 import Header from "./components/header";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,6 +35,7 @@ const App = () => {
         <Routes>
             <Route path="/" exact={true} element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/realtime" exact={true} element={<ProtectedRoute><Realtime /></ProtectedRoute>} />
+            <Route path="/upload" exact={true} element={<Upload />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
