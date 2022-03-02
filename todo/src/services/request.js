@@ -1,8 +1,8 @@
-import QueryGrid from './querygrid';
+import QueryGrid from 'querygrid';
 
 const request = QueryGrid({
-    projectID: 'qg-41c5JNx',
-    secretKey: 'qgs-GxcoIMPIA33R-U6y2OtXggYR1'
-})
+  projectID: 'qg-ZKLTFo6',
+  secretKey: 'qgs-tOMMooLLBGpwzKQS-3b1pwU90',
+});
 
-export default request
+export default request;
